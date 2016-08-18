@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 export class Header extends Component {
 
@@ -24,10 +24,7 @@ export class Header extends Component {
           <div className="navbar-collapse collapse" id="navbar-main">
             <ul className="nav navbar-nav">
               <li>
-                <a href="../help/">Help</a>
-              </li>
-              <li>
-                <a href="http://news.bootswatch.com">Blog</a>
+                <Link to={`/setting`}>Setting</Link>
               </li>
             </ul>
           </div>

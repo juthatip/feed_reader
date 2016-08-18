@@ -7,10 +7,10 @@ export class PageContent extends Component {
   constructor(props) {
     super();
 
-    console.log(props.location.query.id);
+    // console.log(props.location.query.id);
 
     this.content = this.getContent(props.location.query.id);
-    console.log(this.content);
+    // console.log(this.content);
   }
 
   getContent(id) {
@@ -39,7 +39,7 @@ export class PageContent extends Component {
       }
     ];
 
-    return _.find(this.contents, { 'id': parseInt(id) });
+    return _.find(this.contents, { 'id': parseInt(id, 10) });
 
 }
 

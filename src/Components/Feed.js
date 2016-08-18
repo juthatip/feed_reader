@@ -1,19 +1,39 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import { Content } from './Content';
+import FacebookSDK from './FacebookSDK';
 
 export class Feed extends Component {
 
   constructor() {
     super();
+
+    // console.log(111);
+    //
+    this.state = {
+      contents: []
+    };
+    //
+    FacebookSDK.getLoginStatus((res) => {
+      // console.log(res);
+      if (res.isLogin === 'connected') {
+        console.log(this.state);
+        this.setState({
+          contents: this.getContents()
+        });
+      } else {
+        browserHistory.push({
+          pathname: "login"
+        });
+      }
+    });
     // do when this class is calling
 
-    this.test = 'oh test';
-    this.config = {
-      db: 'mysql',
-      pass: '123'
-    };
+  }
 
-    this.contents = [
+  //method
+  getContents() {
+    return [
       {
         id: 1,
         title: "Chat With The World's Greatest Counterfeiter",
@@ -36,15 +56,13 @@ export class Feed extends Component {
         time: "Last Night"
       }
     ];
-
   }
 
   render() {
     return (
       <div className="container top">
         <div className="row news">
-          {this.contents.map(function(object, i){
-            console.log(object);
+          {this.state.contents.map(function(object, i){
             return <Content data={object} key={i} />;
           })}
         </div>
