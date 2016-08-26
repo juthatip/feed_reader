@@ -4,11 +4,6 @@ import { Header } from './Header';
 
 export class PageSetting extends Component {
 
-  constructor() {
-    super();
-    // console.log(FacebookSDK.getLoginStatus());
-  }
-
   render() {
     let styles = {
       marginTop: "100px"
