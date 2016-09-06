@@ -42,16 +42,16 @@ export class CreateFeed extends Component {
     let styles = {
       marginTop: "100px"
     }
-    <div style={styles}>
     return (
       <div>
         <Header />
+        <div style={styles}>
           <p>Title: <input type="text" /></p>
           {this.state.urls.map((value, i)=>{
             return <p key={i}>url: <input type="text" onChange={this.handleUrls.bind(this, i)} /></p>;
           })}
 
-          <a href="">+add url (limit 5 urls)</a>
+          {/*<a href="">+add url (limit 5 urls)</a>*/}
           <div>
             <buttton onClick={this.addFeed}>Add a Feed</buttton>
           </div>
