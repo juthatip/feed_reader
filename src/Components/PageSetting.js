@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Header } from './Header';
-// import FacebookSDK from './FacebookSDK'
 
 export class PageSetting extends Component {
 

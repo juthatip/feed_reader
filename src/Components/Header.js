@@ -10,6 +10,7 @@ export class Header extends Component {
   }
 
   render(){
+
     return (
       <div className="navbar navbar-default navbar-fixed-top">
         <div className="container">
@@ -23,6 +24,12 @@ export class Header extends Component {
           </div>
           <div className="navbar-collapse collapse" id="navbar-main">
             <ul className="nav navbar-nav">
+              <li>
+                <Link to={`/createfeed`}>Create Feed Fanpage</Link>
+              </li>
+              <li>
+                <Link to={`/feeds`}>All Feeds</Link>
+              </li>
               <li>
                 <Link to={`/setting`}>Setting</Link>
               </li>
