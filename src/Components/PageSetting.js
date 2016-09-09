@@ -3,6 +3,7 @@ import { Header } from './Header';
 
 export class PageSetting extends Component {
 
+
   render() {
     let styles = {
       marginTop: "100px"

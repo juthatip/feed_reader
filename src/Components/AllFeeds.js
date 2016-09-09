@@ -5,22 +5,37 @@ export class AllFeeds extends Component {
   constructor() {
     super();
 
+    // this.state = {
+    //   feeds: [
+    //     {
+    //       title: "group_1",
+    //       pageName: ["sanook", "kapook", "mthai"]
+    //     },
+    //     {
+    //       title: "group_2",
+    //       pageName: ["js", "html", "css"]
+    //     },
+    //     {
+    //       title: "group_3",
+    //       pageName: ["diarytoodsy", "bansuay", "talk"]
+    //     }
+    //   ]
+    // }
+
     this.state = {
-      feeds: [
-        {
-          title: "group_1",
-          pageName: ["sanook", "kapook", "mthai"]
-        },
-        {
-          title: "group_2",
-          pageName: ["js", "html", "css"]
-        },
-        {
-          title: "group_3",
-          pageName: ["diarytoodsy", "bansuay", "talk"]
-        }
-      ]
+      feeds: []
     }
+
+    var feeds = firebase.database().ref('feeds');
+    feeds.on('value', (snapshot) => {
+
+      let data = snapshot.val();
+      let dataArr = Object.keys(data).map(key => data[key]);
+      console.log(dataArr);
+      this.setState({
+        feeds: dataArr
+      });
+    });
 
   }
 
@@ -40,7 +55,7 @@ export class AllFeeds extends Component {
                 <div key={i} >
                   {object.title}
 
-                  {object.pageName.map((page, i) =>
+                  {object.urls.map((page, i) =>
                     <div key={i}>{page}</div>
                   )}
 
