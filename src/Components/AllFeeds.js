@@ -55,11 +55,12 @@ export class AllFeeds extends Component {
                 <div key={i} >
                   {object.title}
 
-                  {object.urls.map((page, i) =>
-                    <div key={i}>{page}</div>
+                  {object.urls.map((page, i) => (
+                      <div key={i}>{page}</div>
+                    )
                   )}
 
-                </div>);
+                </div>)
             })
             }
           </div>
