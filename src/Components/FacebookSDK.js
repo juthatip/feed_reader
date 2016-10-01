@@ -63,6 +63,20 @@ class FacebookSDK {
     }
   }
 
+  getPageInfo(uri, callback) {
+    FB.api(
+      "/" + uri,
+      { fields: "id,name,picture" },
+      function (response) {
+        console.log(response);
+        if (response && !response.error) {
+          /* handle the result */
+          callback(response);
+        }
+      }
+    );
+  }
+
 }
 
 let facebookSDK = new FacebookSDK();

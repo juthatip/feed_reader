@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Header } from './Header';
+import FacebookSDK from './FacebookSDK';
 
 export class CreateFeed extends Component {
   constructor() {
    super();
+    FacebookSDK.getLoginStatus(() => {
+
+    });
     this.addFeed = this.addFeed.bind(this);
     this.handleTitle = this.handleTitle.bind(this);
     // this.handleUrls = this.handleUrls.bind(this);
@@ -43,11 +47,45 @@ export class CreateFeed extends Component {
 
   saveFeed() {
 
-    var feedKey = firebase.database().ref().child('feeds').push().key;
+    // var str = "hello world!";
+    // var result = /^hello/.test(str);
+    // console.log(url.match(/facebook.com\/(\.+)/));
+    // console.log(result); // true
 
+    const uri = this.state.urls.map((url) => {
+      let res = url.match(/facebook.com\/(\w+)/);
+      if (res !== null && res[1]) {
+        return res[1];
+      } else {
+        return null;
+      }
+    }).filter((url) => {
+      return url !== null;
+    });
+
+    // console.log(uri);
+    var feedKey = firebase.database().ref().child('feeds').push().key;
     firebase.database().ref('feeds/' + feedKey ).set({
       title: this.state.title,
-      urls: this.state.urls
+      urls: uri
+    }).then(() => {
+
+      // console.log(uri);
+
+      uri.forEach((element) => {
+        FacebookSDK.getPageInfo(element, (resp) => {
+          console.log(resp);
+          firebase.database().ref('fbPage/' + element ).set({
+            id: resp.id,
+            name: resp.name,
+            picture: resp.picture.data.url
+          })
+        })
+
+      });
+
+
+
     });
 
     this.setState({
