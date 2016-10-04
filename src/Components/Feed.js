@@ -18,13 +18,13 @@ export class Feed extends Component {
 
     this.contents = [];
 
+    this.pageInfo = [];
 
     this.state = {
       contents: [],
       showViewMoreBtn: false
     };
 
-    this.facebookPage = [];
     //
     FacebookSDK.getLoginStatus((res) => {
       if (res.isLogin === 'connected') {
@@ -41,26 +41,38 @@ export class Feed extends Component {
   }
 
   getContentFanPage() {
-    this.facebookPage = [
-      "DramaAdd",
-      // "Toodsdiary",
-      "fan.sanook"
-    ];
 
-    let facebookCallback = this.facebookPage.map((fbpage) => {
-      return (callback) => {
-        this.getFanPageFeed(fbpage, callback);
-      }
-    });
+    const db = firebase.database();
+    const feeds = db.ref('feeds/-KTAJCkYhzfb8bo74A9P');
 
-    // console.log(facebookCallback);
-    async.parallel(
-      facebookCallback,
-      (err, results) => {
-        let contents  = _.orderBy(_.concat(...results), ['created_time'], ['desc']);
-        this.contents = contents;
-        this.getContentByPage();
-        this.setState({showViewMoreBtn: true});
+    feeds.once('value')
+      .then((snapshot) => {
+        let urls = snapshot.val().urls;
+
+        let facebookCallback = urls.map((fbpage) => {
+          return (callback) => {
+
+            db.ref('fbPage/' + fbpage).once('value').then((snapshot) => {
+              let pageInfo = snapshot.val();
+              this.pageInfo[pageInfo.id] = pageInfo;
+
+              this.getFanPageFeed(fbpage, callback, pageInfo.id);
+            });
+
+          }
+        });
+
+        // console.log(facebookCallback);
+        async.parallel(
+          facebookCallback,
+          (err, results) => {
+            let contents  = _.orderBy(_.concat(...results), ['created_time'], ['desc']);
+            this.contents = contents;
+            this.getContentByPage();
+            this.setState({showViewMoreBtn: true});
+          }
+        );
+
       });
 
 
@@ -78,7 +90,7 @@ export class Feed extends Component {
     // );
   }
 
-  getFanPageFeed(fbpage, callback) {
+  getFanPageFeed(fbpage, callback, pageId) {
     FB.api(
       "/" + fbpage + "/feed", { fields: "id,message,story,created_time,picture" },
       (response) => {
@@ -86,7 +98,13 @@ export class Feed extends Component {
         if (response && !response.error) {
           /* handle the result */
           // this.contents = response.data;
-          callback(null, response.data);
+          // console.log(response.data);
+          let data = response.data.map((obj) => {
+            obj.pageId = pageId;
+            return obj;
+          });
+
+          callback(null, data);
           // this.getContentByPage();
           // this.setState({showViewMoreBtn: true});
         }
@@ -161,9 +179,9 @@ export class Feed extends Component {
     return (
       <div className="container top">
         <div className="row news">
-          {this.state.contents.map(function(object, i){
+          {this.state.contents.map((object, i) => {
 
-              return <Content data={object} key={i}/>;
+              return <Content data={object} pageInfo={this.pageInfo[object.pageId]} key={i}/>
 
           })}
         </div>

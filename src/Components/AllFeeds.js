@@ -31,7 +31,6 @@ export class AllFeeds extends Component {
 
       let data = snapshot.val();
       let dataArr = Object.keys(data).map(key => data[key]);
-      console.log(dataArr);
       this.setState({
         feeds: dataArr
       });
@@ -39,6 +38,16 @@ export class AllFeeds extends Component {
 
   }
 
+  getUrls = (object) => {
+    if (object.hasOwnProperty("urls")) {
+      return object.urls.map((page, i) =>
+        <div key={i}>{page}</div>
+      )
+    } else {
+      return '';
+    }
+
+  }
 
   render() {
     let styles = {
@@ -54,12 +63,7 @@ export class AllFeeds extends Component {
               return (
                 <div key={i} >
                   {object.title}
-
-                  {object.urls.map((page, i) => (
-                      <div key={i}>{page}</div>
-                    )
-                  )}
-
+                  { this.getUrls(object) }
                 </div>)
             })
             }
