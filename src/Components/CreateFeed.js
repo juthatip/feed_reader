@@ -4,7 +4,7 @@ import FacebookSDK from './FacebookSDK';
 
 export class CreateFeed extends Component {
   constructor() {
-   super();
+    super();
     FacebookSDK.getLoginStatus(() => {
 
     });
@@ -52,6 +52,7 @@ export class CreateFeed extends Component {
     // console.log(url.match(/facebook.com\/(\.+)/));
     // console.log(result); // true
 
+
     const uri = this.state.urls.map((url) => {
       let res = url.match(/facebook.com\/(\w+)/);
       if (res !== null && res[1]) {
@@ -63,30 +64,40 @@ export class CreateFeed extends Component {
       return url !== null;
     });
 
-    // console.log(uri);
-    var feedKey = firebase.database().ref().child('feeds').push().key;
-    firebase.database().ref('feeds/' + feedKey ).set({
-      title: this.state.title,
-      urls: uri
-    }).then(() => {
+    firebase.database().ref('feeds').once('value').then((snapshot) => {
+      // console.log(snapshot.numChildren());
+      const numChildren = snapshot.numChildren();
 
-      // console.log(uri);
+      var feedKey = firebase.database().ref().child('feeds').push().key;
+      firebase.database().ref('feeds/' + feedKey ).set({
+        title: this.state.title,
+        urls: uri
+      }).then(() => {
 
-      uri.forEach((element) => {
-        FacebookSDK.getPageInfo(element, (resp) => {
-          console.log(resp);
-          firebase.database().ref('fbPage/' + element ).set({
-            id: resp.id,
-            name: resp.name,
-            picture: resp.picture.data.url
+        if (numChildren === 0) {
+          firebase.database().ref('defaultFeed').set({
+            feedId: feedKey
+          });
+        }
+
+        // console.log(uri);
+
+        uri.forEach((element) => {
+          FacebookSDK.getPageInfo(element, (resp) => {
+            console.log(resp);
+            firebase.database().ref('fbPage/' + element ).set({
+              id: resp.id,
+              name: resp.name,
+              picture: resp.picture.data.url
+            })
           })
-        })
 
+        });
       });
-
-
-
     });
+
+    // console.log(uri);
+
 
     this.setState({
       title: '',

@@ -28,7 +28,7 @@ export class Content extends Component {
             <li>{this.props.data.created_time}</li>
             <li><a href=""><i className="fa fa-bookmark"></i></a></li>
           </ul>
-          <p>{this.props.data.message}</p>
+          <p>{this.props.data.shortMsg}</p>
         </div>
       </div>
     );

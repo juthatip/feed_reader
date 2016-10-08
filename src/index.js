@@ -7,6 +7,7 @@ import { Login } from './Components/Login';
 import { PageSetting } from './Components/PageSetting';
 import { CreateFeed } from './Components/CreateFeed';
 import { AllFeeds } from './Components/AllFeeds';
+import { FeedWall } from './Components/FeedWall';
 import './index.css';
 
 
@@ -18,6 +19,8 @@ ReactDOM.render(
     <Route path="setting" component={PageSetting} />
     <Route path="createfeed" component={CreateFeed} />
     <Route path="feeds" component={AllFeeds} />
+    <Route path="feed-wall/:feedId" component={FeedWall} />
+
   </Router>,
   document.getElementById('root')
 );

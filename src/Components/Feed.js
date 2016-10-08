@@ -6,8 +6,15 @@ import FacebookSDK from './FacebookSDK';
 
 export class Feed extends Component {
 
-  constructor() {
+  constructor(props) {
     super();
+    if(props.hasOwnProperty('feedId') && props.feedId) {
+      this.feedId = props.feedId;
+    } else {
+      this.feedId = null;
+    }
+
+
     this.getContentByPage = this.getContentByPage.bind(this);
 
     // todo set current content
@@ -28,6 +35,8 @@ export class Feed extends Component {
     //
     FacebookSDK.getLoginStatus((res) => {
       if (res.isLogin === 'connected') {
+
+
         this.getContentFanPage();
 
       } else {
@@ -43,12 +52,10 @@ export class Feed extends Component {
   getContentFanPage() {
 
     const db = firebase.database();
-    const feeds = db.ref('feeds/-KTAJCkYhzfb8bo74A9P');
-
+    const feeds = db.ref('feeds/'+ this.feedId);
     feeds.once('value')
       .then((snapshot) => {
         let urls = snapshot.val().urls;
-
         let facebookCallback = urls.map((fbpage) => {
           return (callback) => {
 
@@ -100,6 +107,13 @@ export class Feed extends Component {
           // this.contents = response.data;
           // console.log(response.data);
           let data = response.data.map((obj) => {
+
+            if (obj.hasOwnProperty('message')) {
+              if (obj.message.length > 50) {
+                obj.shortMsg = obj.message.toString().substr(0, 50) + '...';
+              }
+            }
+
             obj.pageId = pageId;
             return obj;
           });
@@ -170,7 +184,7 @@ export class Feed extends Component {
     let viewMoreBtn;
 
     if(this.state.showViewMoreBtn) {
-      viewMoreBtn =  <button className="btn-default" onClick={this.getContentByPage}>View More</button>;
+      viewMoreBtn =  <button className="btn btn-default" onClick={this.getContentByPage}>View More</button>;
     } else {
       viewMoreBtn = '';
     }
