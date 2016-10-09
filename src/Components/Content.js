@@ -17,18 +17,21 @@ export class Content extends Component {
   render() {
 
     return (
-      <div className="news-container col-xs-12 col-sm-6 col-md-4">
-        <div className="news-content">
-          <div className="row">
-            <img src={this.props.pageInfo.picture} className="col-xs-3" alt=""/>
-            <span className="col-xs-9">{this.props.pageInfo.name}</span>
+      <div className="news-container overflow-hidden col-xs-12 col-sm-6 col-md-4">
+        <div className="news-content panel panel-default">
+          <div className="panel-heading overflow-hidden">
+
+            <h4 className="col-xs-12"><img src={this.props.pageInfo.picture} className="rounded fanpage-logo"/>{this.props.pageInfo.name}</h4>
           </div>
+          <div className="panel-body box">
           <a onClick={this.pageLoad.bind(this)}><img src={this.props.data.picture} className="img-responsive col-xs-6" alt="" /></a>
-          <ul className="nav-detail col-xs-6">
-            <li>{this.props.data.created_time}</li>
-            <li><a href=""><i className="fa fa-bookmark"></i></a></li>
-          </ul>
-          <p>{this.props.data.shortMsg}</p>
+            <div className="col-xs-6 text-left">
+              <ul className="nav-detail">
+                <li className="f-small"><i className="fa fa-clock-o"></i>{this.props.data.created_time}</li>
+              </ul>
+              <p className="color-text">{this.props.data.shortMsg}</p>
+            </div>
+          </div>
         </div>
       </div>
     );

@@ -21,7 +21,10 @@ export class CreateFeed extends Component {
 
 
   handleTitle(e) {
+
     this.setState({title: e.target.value});
+
+    console.log(this.state.title);
   }
 
   addFeed() {
@@ -51,6 +54,8 @@ export class CreateFeed extends Component {
     // var result = /^hello/.test(str);
     // console.log(url.match(/facebook.com\/(\.+)/));
     // console.log(result); // true
+
+    console.log(this.state);
 
 
     const uri = this.state.urls.map((url) => {
@@ -84,7 +89,7 @@ export class CreateFeed extends Component {
 
         uri.forEach((element) => {
           FacebookSDK.getPageInfo(element, (resp) => {
-            console.log(resp);
+            // console.log(resp);
             firebase.database().ref('fbPage/' + element ).set({
               id: resp.id,
               name: resp.name,
@@ -95,9 +100,6 @@ export class CreateFeed extends Component {
         });
       });
     });
-
-    // console.log(uri);
-
 
     this.setState({
       title: '',
@@ -113,17 +115,21 @@ export class CreateFeed extends Component {
     return (
       <div>
         <Header />
-        <div style={styles}>
-          <p>Title: <input type="text" value={this.state.title} onChange={this.handleTitle} /></p>
+        <div className="container" style={styles}>
+          <div className="clearfix">
+          <p className="clear"><span>Title:</span> <input type="text" value={this.state.title} onChange={this.handleTitle} className="col-xs-9 form-control" /></p>
           {this.state.urls.map((value, i)=>{
-            return <p key={i}>url: <input type="text" onChange={this.handleUrls.bind(this, i)} value={value} /></p>;
+            return <p className="clear" key={i}><span> url: </span><input type="text" onChange={this.handleUrls.bind(this, i)} value={value} className="col-xs-9 form-control" /></p>;
           })}
-
-          {/*<a href="">+add url (limit 5 urls)</a>*/}
-          <div>
-            <buttton onClick={this.addFeed}>Add a Feed</buttton>
           </div>
-          <button onClick={this.saveFeed.bind(this)}>Check state</button>
+          <div className="clearfix ptop-20">
+            <div className="col-md-4 btn-group">
+              <buttton className="btn btn-info" onClick={this.addFeed}>Add Url</buttton>
+            </div>
+            <div className="col-mg-4 btn-group">
+              <button className="btn btn-default" onClick={this.saveFeed.bind(this)}>Add Feed</button>
+            </div>
+          </div>
         </div>
       </div>
     );

@@ -53,7 +53,7 @@ export class AllFeeds extends Component {
   getUrls = (object) => {
     if (object.hasOwnProperty("urls")) {
       return object.urls.map((page, i) =>
-        <ul key={i}><li>- {page}</li></ul>
+        <ul key={i} className="p-10"><li><i className="fa fa-bolt"></i> {page}</li></ul>
       )
     } else {
       return '';
@@ -86,21 +86,28 @@ export class AllFeeds extends Component {
     let styles = {
       marginTop: "100px"
     }
+
+    console.log();
     return (
       <div>
         <Header />
-          <p style={styles}>test</p>
-          <div>
+          <div className="overflow-hidden" style={styles}>
             {
               this.state.feeds.map((object, i)=> {
               return (
-                <div key={i} className="col-xs-6">
-                  <h1>Title: {object.title}</h1>
+                <div key={i} className="col-sm-6">
+                  <div className="panel panel-default">
+                  <h1 className="panel-heading mtop-0">{object.title}</h1>
+                    {console.log(object)}
                   { this.getUrls(object) }
-                  <Link className="btn btn-success" to={{ pathname: '/feed-wall/' + object.id }}>View</Link>
-                  <span className="btn btn-danger" onClick={this.handleDelete.bind(this, object.id) }> Delete</span>
+                  <div className="panel-footer overflow-hidden text-center">
+                  <Link className="btn btn-success mright-10" to={{ pathname: '/feed-wall/' + object.id }}>View</Link>
+                  <span className="btn btn-danger mright-10" onClick={this.handleDelete.bind(this, object.id) }> Delete</span>
                   <span className="btn btn-default" onClick={this.handleSetdefaultFeed.bind(this, object.id)}>Set Default</span>
-                </div>)
+                  </div>
+                </div>
+                </div>
+              )
             })
             }
           </div>
