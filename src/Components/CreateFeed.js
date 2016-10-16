@@ -21,10 +21,7 @@ export class CreateFeed extends Component {
 
 
   handleTitle(e) {
-
     this.setState({title: e.target.value});
-
-    console.log(this.state.title);
   }
 
   addFeed() {
@@ -55,7 +52,7 @@ export class CreateFeed extends Component {
     // console.log(url.match(/facebook.com\/(\.+)/));
     // console.log(result); // true
 
-    console.log(this.state);
+    const title = this.state.title;
 
 
     const uri = this.state.urls.map((url) => {
@@ -75,7 +72,7 @@ export class CreateFeed extends Component {
 
       var feedKey = firebase.database().ref().child('feeds').push().key;
       firebase.database().ref('feeds/' + feedKey ).set({
-        title: this.state.title,
+        title: title,
         urls: uri
       }).then(() => {
 
