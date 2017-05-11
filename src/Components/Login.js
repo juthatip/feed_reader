@@ -7,7 +7,6 @@ export class Login extends Component {
   constructor() {
     super();
     FacebookSDK.getLoginStatus((res) => {
-      console.log(res);
       if (res.isLogin === 'connected') {
         browserHistory.push({
           pathname: "/"

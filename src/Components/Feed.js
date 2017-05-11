@@ -150,7 +150,6 @@ export class Feed extends Component {
 
 
 
-
   //method
   // getContents() {
   //   return [
@@ -192,6 +191,7 @@ export class Feed extends Component {
 
     return (
       <div className="container top">
+
         <div className="row news">
           {this.state.contents.map((object, i) => {
 

@@ -87,7 +87,6 @@ export class AllFeeds extends Component {
       marginTop: "100px"
     }
 
-    console.log();
     return (
       <div>
         <Header />

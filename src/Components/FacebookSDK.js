@@ -32,6 +32,13 @@ class FacebookSDK {
 
   }
 
+  logout(callback) {
+    this.isLogin  = null;
+    this.userInfo = {};
+    FB.logout(callback);
+  }
+
+
   getLoginStatus(callback) {
     this.callback = callback;
     if (this.isLogin === null) {

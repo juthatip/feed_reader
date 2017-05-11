@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, browserHistory } from 'react-router';
+import FacebookSDK from './FacebookSDK';
 
 export class Header extends Component {
 
@@ -8,6 +9,16 @@ export class Header extends Component {
       pathname: "/"
     });
   }
+
+  facebookLogout = () => {
+    FacebookSDK.logout(() => {
+      console.log(2233);
+      browserHistory.push({
+        pathname: "/login"
+      });
+    });
+  }
+
 
   render(){
 
@@ -34,6 +45,7 @@ export class Header extends Component {
                 <Link to={`/setting`}>Setting</Link>
               </li>
             </ul>
+            <button onClick={this.facebookLogout}>Logout</button>
           </div>
         </div>
       </div>

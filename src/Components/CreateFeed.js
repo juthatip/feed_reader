@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Header } from './Header';
 import FacebookSDK from './FacebookSDK';
+import FeedForm from './FeedForm';
 
 export class CreateFeed extends Component {
   constructor() {
@@ -19,7 +20,6 @@ export class CreateFeed extends Component {
 
   }
 
-
   handleTitle(e) {
     this.setState({title: e.target.value});
   }
@@ -36,7 +36,7 @@ export class CreateFeed extends Component {
     });
   }
 
-  handleUrls(i, e) {
+  handleUrls = (i, e) => {
     let urls = this.state.urls;
     urls[i] = e.target.value;
 
@@ -53,8 +53,6 @@ export class CreateFeed extends Component {
     // console.log(result); // true
 
     const title = this.state.title;
-
-
     const uri = this.state.urls.map((url) => {
       let res = url.match(/facebook.com\/(\w+)/);
       if (res !== null && res[1]) {
@@ -86,7 +84,7 @@ export class CreateFeed extends Component {
 
         uri.forEach((element) => {
           FacebookSDK.getPageInfo(element, (resp) => {
-            // console.log(resp);
+            console.log(resp);
             firebase.database().ref('fbPage/' + element ).set({
               id: resp.id,
               name: resp.name,
@@ -112,12 +110,10 @@ export class CreateFeed extends Component {
     return (
       <div>
         <Header />
+
         <div className="container" style={styles}>
           <div className="clearfix">
-          <p className="clear"><span>Title:</span> <input type="text" value={this.state.title} onChange={this.handleTitle} className="col-xs-9 form-control" /></p>
-          {this.state.urls.map((value, i)=>{
-            return <p className="clear" key={i}><span> url: </span><input type="text" onChange={this.handleUrls.bind(this, i)} value={value} className="col-xs-9 form-control" /></p>;
-          })}
+            <FeedForm {...this.state} handleTitle={this.handleTitle} handleUrls={this.handleUrls} />
           </div>
           <div className="clearfix ptop-20">
             <div className="col-md-4 btn-group">
